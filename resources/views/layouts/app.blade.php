@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('categories.index') }}">Kategori</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('books.index') }}">Buku</a>
+                </li>
             </ul>
         </div>
     </nav>
