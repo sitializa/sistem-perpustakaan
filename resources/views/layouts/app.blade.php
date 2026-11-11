@@ -19,6 +19,18 @@
                     <a class="nav-link" href="{{ route('books.index') }}">Buku</a>
                 </li>
             </ul>
+
+            @auth
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text me-3">
+                        {{ auth()->user()->name }} ({{ auth()->user()->role }})
+                    </span>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-outline-light">Logout</button>
+                    </form>
+                </div>
+            @endauth
         </div>
     </nav>
 
