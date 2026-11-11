@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -21,7 +22,17 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        Category::create($request->only(['name', 'description']));
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
+            'description' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'name.max' => 'Nama kategori maksimal 255 karakter.',
+            'name.unique' => 'Nama kategori sudah dipakai.',
+            'description.max' => 'Deskripsi maksimal 1000 karakter.',
+        ]);
+
+        Category::create($validated);
 
         return redirect()->route('categories.index')
             ->with('success', 'Kategori berhasil ditambahkan.');
@@ -34,7 +45,17 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $category->update($request->only(['name', 'description']));
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', Rule::unique('categories', 'name')->ignore($category)],
+            'description' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'name.max' => 'Nama kategori maksimal 255 karakter.',
+            'name.unique' => 'Nama kategori sudah dipakai.',
+            'description.max' => 'Deskripsi maksimal 1000 karakter.',
+        ]);
+
+        $category->update($validated);
 
         return redirect()->route('categories.index')
             ->with('success', 'Kategori berhasil diperbarui.');
