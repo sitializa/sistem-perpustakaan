@@ -20,5 +20,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class)->except('show');
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
+
     Route::get('borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
+    Route::get('borrowings/create', [BorrowingController::class, 'create'])->name('borrowings.create');
+    Route::post('borrowings', [BorrowingController::class, 'store'])->name('borrowings.store');
+    Route::get('borrowings/{borrowing}', [BorrowingController::class, 'show'])->name('borrowings.show');
+    Route::post('borrowings/{borrowing}/return', [BorrowingController::class, 'returnBook'])->name('borrowings.return');
 });

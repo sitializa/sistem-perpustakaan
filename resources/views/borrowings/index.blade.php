@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">Daftar Peminjaman</h3>
-    <a href="#" class="btn btn-primary disabled">Pinjam Buku</a>
+    <<a href="{{ route('borrowings.create') }}" class="btn btn-primary">Pinjam Buku</a>
 </div>
 
 <div class="card">
@@ -20,6 +20,7 @@
                     <th>Jatuh Tempo</th>
                     <th>Tgl Kembali</th>
                     <th>Status</th>
+                    <th class="text-end">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,10 +37,13 @@
                                 {{ $borrowing->status }}
                             </span>
                         </td>
+                        <td class="text-end">
+                            <a href="{{ route('borrowings.show', $borrowing) }}" class="btn btn-sm btn-info">Detail</a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted">Belum ada transaksi peminjaman.</td>
+                        <td colspan="8" class="text-center text-muted">Belum ada transaksi peminjaman.</td>
                     </tr>
                 @endforelse
             </tbody>
