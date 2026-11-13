@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Borrowing;
-use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Borrowing;
 use App\Models\Member;
-use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -44,8 +44,7 @@ class BorrowingController extends Controller
             'book_ids.min'       => 'Pilih minimal satu buku.',
         ]);
 
-        // Sementara pakai user pertama; diganti Auth::id() setelah login jadi (P14)
-        $petugasId = User::orderBy('id')->value('id');
+        $petugasId = Auth::id();
 
         DB::transaction(function () use ($validated, $petugasId) {
             $borrowDate = now()->toDateString();
