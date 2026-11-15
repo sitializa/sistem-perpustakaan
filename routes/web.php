@@ -17,7 +17,14 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::resource('categories', CategoryController::class)->except('show');
+    // Kategori: admin dan petugas boleh melihat daftar
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+
+    // Kategori: hanya admin yang boleh tambah, edit, hapus
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('categories', CategoryController::class)->except(['index', 'show']);
+    });
+
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
     Route::get('borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
