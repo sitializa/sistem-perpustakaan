@@ -21,14 +21,15 @@ Route::middleware('auth')->group(function () {
     // Kategori: admin dan petugas boleh melihat daftar
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 
-    // Kategori: hanya admin yang boleh tambah, edit, hapus
+    // Hanya admin: tambah, edit, hapus kategori dan kelola user
     Route::middleware('role:admin')->group(function () {
         Route::resource('categories', CategoryController::class)->except(['index', 'show']);
+        Route::resource('users', UserController::class)->except('show');
     });
 
+    // Admin dan petugas
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
-    Route::resource('users', UserController::class)->except('show');
 
     Route::get('borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
     Route::get('borrowings/create', [BorrowingController::class, 'create'])->name('borrowings.create');

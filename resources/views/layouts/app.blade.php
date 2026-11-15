@@ -11,16 +11,33 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">Perpustakaan</a>
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('categories.index') }}">Kategori</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('books.index') }}">Buku</a>
-                </li>
-            </ul>
 
             @auth
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
+                           href="{{ route('categories.index') }}">Kategori</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}"
+                           href="{{ route('books.index') }}">Buku</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}"
+                           href="{{ route('members.index') }}">Anggota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('borrowings.*') ? 'active' : '' }}"
+                           href="{{ route('borrowings.index') }}">Peminjaman</a>
+                    </li>
+                    @if (auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                               href="{{ route('users.index') }}">Pengguna</a>
+                        </li>
+                    @endif
+                </ul>
+
                 <div class="d-flex align-items-center">
                     <span class="navbar-text me-3">
                         {{ auth()->user()->name }} ({{ auth()->user()->role }})
