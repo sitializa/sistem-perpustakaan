@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use App\Http\Requests\MemberRequest;
 
 class MemberController extends Controller
 {
@@ -25,17 +26,9 @@ class MemberController extends Controller
         return view('members.create');
     }
 
-    public function store(Request $request)
+    public function store(MemberRequest $request)
     {
-        $validated = $request->validate([
-            'member_code' => 'required|string|max:50|unique:members,member_code',
-            'name'        => 'required|string|max:255',
-            'email'       => 'nullable|email|max:255|unique:members,email',
-            'phone'       => 'nullable|string|max:20',
-            'address'     => 'nullable|string',
-        ]);
-
-        Member::create($validated);
+        Member::create($request->validated());
 
         return redirect()->route('members.index')
             ->with('success', 'Anggota berhasil ditambahkan.');
@@ -54,17 +47,9 @@ class MemberController extends Controller
         return view('members.edit', compact('member'));
     }
 
-    public function update(Request $request, Member $member)
+    public function update(MemberRequest $request, Member $member)
     {
-        $validated = $request->validate([
-            'member_code' => 'required|string|max:50|unique:members,member_code,' . $member->id,
-            'name'        => 'required|string|max:255',
-            'email'       => 'nullable|email|max:255|unique:members,email,' . $member->id,
-            'phone'       => 'nullable|string|max:20',
-            'address'     => 'nullable|string',
-        ]);
-
-        $member->update($validated);
+        $member->update($request->validated());
 
         return redirect()->route('members.index')
             ->with('success', 'Data anggota berhasil diperbarui.');
