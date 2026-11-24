@@ -59,6 +59,11 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        if ($book->borrowingItems()->exists()) {
+            return redirect()->route('books.index')
+                ->with('error', 'Buku tidak bisa dihapus karena sudah pernah dipinjam.');
+        }
+
         $book->delete();
 
         return redirect()->route('books.index')
